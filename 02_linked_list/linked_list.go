@@ -1,12 +1,12 @@
 package linkedlist
 
 type Node struct {
-	next *Node
-	data int
+	Next *Node
+	Data int
 }
 
 func NewNode(data int) *Node {
-	return &Node{data: data}
+	return &Node{Data: data}
 }
 
 func NewNodeFromSlice(s []int) *Node {
@@ -14,53 +14,50 @@ func NewNodeFromSlice(s []int) *Node {
 		return nil
 	}
 	n := NewNode(s[0])
-	if len(s) == 1 {
-		return n
-	}
 	current := n
-	for d := range s[1:] {
-		current.next = NewNode(d)
-		current = current.next
+	for _, d := range s[1:] {
+		current.Next = NewNode(d)
+		current = current.Next
 	}
 	return n
 }
 
-func (n *Node) AppendToTail(data int) {
+func (n *Node) AppendToTail(data int) *Node {
 	if n == nil {
-		n = NewNode(data)
-		return
+		return NewNode(data)
 	}
 	currentNode := n
-	for currentNode.next != nil {
-		currentNode = currentNode.next
+	for currentNode.Next != nil {
+		currentNode = currentNode.Next
 	}
-	currentNode.next = NewNode(data)
+	currentNode.Next = NewNode(data)
+	return n
 }
 
-func (n *Node) Delete(data int) {
+func (n *Node) Delete(data int) *Node {
 	if n == nil {
-		return
+		return n
 	}
-	if n.data == data {
-		n = n.next
-		return
+	if n.Data == data {
+		return n.Next
 	}
 	currentNode := n
-	for currentNode.next != nil {
-		if currentNode.next.data == data {
-			currentNode.next = currentNode.next.next
-			return
+	for currentNode.Next != nil {
+		if currentNode.Next.Data == data {
+			currentNode.Next = currentNode.Next.Next
+			return n
 		}
-		currentNode = currentNode.next
+		currentNode = currentNode.Next
 	}
+	return n
 }
 
 func (n *Node) Slice() *[]int {
 	s := []int{}
 	currentNode := n
 	for currentNode != nil {
-		s = append(s, currentNode.data)
-		currentNode = currentNode.next
+		s = append(s, currentNode.Data)
+		currentNode = currentNode.Next
 	}
 	return &s
 }
@@ -76,14 +73,14 @@ func (n *Node) DeleteDups() {
 	}
 	seen := map[int]bool{}
 	currentNode := n
-	seen[currentNode.data] = true
-	for currentNode.next != nil {
-		if seen[currentNode.next.data] {
-			currentNode.next = currentNode.next.next
+	seen[currentNode.Data] = true
+	for currentNode.Next != nil {
+		if seen[currentNode.Next.Data] {
+			currentNode.Next = currentNode.Next.Next
 			continue
 		}
-		seen[currentNode.next.data] = true
-		currentNode = currentNode.next
+		seen[currentNode.Next.Data] = true
+		currentNode = currentNode.Next
 	}
 }
 
@@ -96,14 +93,14 @@ func (n *Node) DeleteDupsNoBuf() {
 	current := n
 	for current != nil {
 		runner := current
-		for runner.next != nil {
-			if current.data == runner.next.data {
-				runner.next = runner.next.next
+		for runner.Next != nil {
+			if current.Data == runner.Next.Data {
+				runner.Next = runner.Next.Next
 				continue
 			}
-			runner = runner.next
+			runner = runner.Next
 		}
-		current = current.next
+		current = current.Next
 	}
 }
 
@@ -115,15 +112,12 @@ func (n *Node) Last(k int) *Node {
 	length := 0
 	for runner != nil {
 		length += 1
-		runner = runner.next
+		runner = runner.Next
 	}
 
 	current := n
-	for i := 0; i < length-k; {
-		if current.next == nil {
-			break
-		}
-		current = current.next
+	for i := 0; i < length-k; i++ {
+		current = current.Next
 	}
 
 	return current
@@ -139,7 +133,7 @@ func (n *Node) lastRec(k int, i *int) *Node {
 	if n == nil {
 		return nil
 	}
-	nd := n.next.lastRec(k, i)
+	nd := n.Next.lastRec(k, i)
 	*i += 1
 	if *i == k {
 		return n
@@ -155,14 +149,14 @@ func (n *Node) LastIter(k int) *Node {
 		if runner == nil {
 			return nil
 		}
-		runner = runner.next
+		runner = runner.Next
 	}
 	current := n
-	for runner.next != nil {
-		current = current.next
-		runner = runner.next
+	for runner.Next != nil {
+		current = current.Next
+		runner = runner.Next
 	}
-	return current
+	return current.Next
 }
 
 //2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle
@@ -176,11 +170,14 @@ func (n *Node) LastIter(k int) *Node {
 func (n *Node) DeleteMiddle() {
 	runner := n
 	current := n
-	for runner != nil && runner.next != nil {
-		runner = runner.next.next
-		current = current.next
+	if runner != nil && runner.Next != nil {
+		runner = runner.Next.Next
 	}
-	if current != nil && current.next != nil {
-		current.next = current.next.next
+	for runner != nil && runner.Next != nil {
+		runner = runner.Next.Next
+		current = current.Next
+	}
+	if current != nil && current.Next != nil {
+		current.Next = current.Next.Next
 	}
 }
