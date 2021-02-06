@@ -266,3 +266,50 @@ func TestNode_LastIter(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_DeleteMiddle(t *testing.T) {
+	tests := []struct {
+		input  *Node
+		expect *Node
+	}{
+		{
+			input:  NewNodeFromSlice([]int{}),
+			expect: nil,
+		},
+		{
+			input:  NewNodeFromSlice([]int{1}),
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2}),
+			expect: NewNodeFromSlice([]int{1, 2}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3}),
+			expect: NewNodeFromSlice([]int{1, 3}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 2, 7, 9}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7}),
+			expect: NewNodeFromSlice([]int{1, 2, 3, 3, 3, 2, 7}),
+		},
+	}
+	for _, tt := range tests {
+		tt.input.DeleteMiddle()
+		current := tt.input
+		currentExpect := tt.expect
+		for current == currentExpect && current != nil {
+			if current != currentExpect {
+				t.Fatalf("got %+v. expected %+v.",
+					tt.input.Slice(),
+					tt.expect.Slice(),
+				)
+			}
+			current = current.next
+			currentExpect = currentExpect.next
+		}
+	}
+}

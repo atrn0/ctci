@@ -55,6 +55,16 @@ func (n *Node) Delete(data int) {
 	}
 }
 
+func (n *Node) Slice() *[]int {
+	s := []int{}
+	currentNode := n
+	for currentNode != nil {
+		s = append(s, currentNode.data)
+		currentNode = currentNode.next
+	}
+	return &s
+}
+
 //2.1 Remove Dups: Write code to remove duplicates from an unsorted linked list.
 //FOLLOW UP How would you solve this problem if a temporary buffer is not allowed?
 
@@ -119,6 +129,12 @@ func (n *Node) Last(k int) *Node {
 	return current
 }
 
+//LastRec This approach uses O(n) times and O(n) spaces. Moreover, not readable :(
+func (n *Node) LastRec(k int) *Node {
+	i := 0
+	return n.lastRec(k, &i)
+}
+
 func (n *Node) lastRec(k int, i *int) *Node {
 	if n == nil {
 		return nil
@@ -129,21 +145,6 @@ func (n *Node) lastRec(k int, i *int) *Node {
 		return n
 	}
 	return nd
-}
-
-func (n *Node) LastRec(k int) *Node {
-	i := 0
-	return n.lastRec(k, &i)
-}
-
-func (n *Node) Slice() *[]int {
-	s := []int{}
-	currentNode := n
-	for currentNode != nil {
-		s = append(s, currentNode.data)
-		currentNode = currentNode.next
-	}
-	return &s
 }
 
 //LastIter is the most optimal. O(n) time, O(1) space.
@@ -162,4 +163,24 @@ func (n *Node) LastIter(k int) *Node {
 		runner = runner.next
 	}
 	return current
+}
+
+//2.3 Delete Middle Node: Implement an algorithm to delete a node in the middle
+//(i.e., any node but the first and last node, not necessarily the exact middle)
+//of a singly linked list, given only access to that node.
+//EXAMPLE input: the node c from the linked list a->b->c->d->e->f
+//	Result: nothing is returned, but the new linked list looks like a ->b->d->e->f
+
+//↓なんか解答はこういうことじゃなかった
+
+func (n *Node) DeleteMiddle() {
+	runner := n
+	current := n
+	for runner != nil && runner.next != nil {
+		runner = runner.next.next
+		current = current.next
+	}
+	if current != nil && current.next != nil {
+		current.next = current.next.next
+	}
 }
