@@ -289,7 +289,7 @@ func TestNode_DeleteMiddle(t *testing.T) {
 			expect: NewNodeFromSlice([]int{1, 3}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
 			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 2, 7, 9}),
 		},
 		{
