@@ -149,3 +149,42 @@ func TestNode_DeleteDupsNoBuf(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_Last(t *testing.T) {
+	tests := []struct {
+		input  *Node
+		k      int
+		expect *Node
+	}{
+		{
+			input:  NewNodeFromSlice([]int{}),
+			k:      1,
+			expect: nil,
+		},
+		{
+			input:  NewNodeFromSlice([]int{1}),
+			k:      0,
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			k:      3,
+			expect: NewNodeFromSlice([]int{3, 2, 7, 9}),
+		},
+	}
+	for _, tt := range tests {
+		tt.input.Last(tt.k)
+		current := tt.input
+		currentExpect := tt.expect
+		for current == currentExpect && current != nil {
+			if current != currentExpect {
+				t.Fatalf("got %+v. expected %+v.",
+					tt.input.Slice(),
+					tt.expect.Slice(),
+				)
+			}
+			current = current.next
+			currentExpect = currentExpect.next
+		}
+	}
+}

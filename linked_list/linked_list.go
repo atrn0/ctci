@@ -56,6 +56,7 @@ func (n *Node) Delete(data int) {
 }
 
 //DeleteDups remove duplicates
+//O(n)
 func (n *Node) DeleteDups() {
 	if n == nil {
 		return
@@ -73,6 +74,8 @@ func (n *Node) DeleteDups() {
 	}
 }
 
+//DeleteDups remove duplicates (No buffer allowed)
+//O(n^2)
 func (n *Node) DeleteDupsNoBuf() {
 	if n == nil {
 		return
@@ -89,6 +92,25 @@ func (n *Node) DeleteDupsNoBuf() {
 		}
 		current = current.next
 	}
+}
+
+func (n *Node) Last(k int) *Node {
+	runner := n
+	length := 0
+	for runner != nil {
+		length += 1
+		runner = runner.next
+	}
+
+	current := n
+	for i := 0; i < length-k; {
+		if current.next == nil {
+			break
+		}
+		current = current.next
+	}
+
+	return current
 }
 
 func (n *Node) Slice() *[]int {
