@@ -55,6 +55,9 @@ func (n *Node) Delete(data int) {
 	}
 }
 
+//2.1 Remove Dups: Write code to remove duplicates from an unsorted linked list.
+//FOLLOW UP How would you solve this problem if a temporary buffer is not allowed?
+
 //DeleteDups remove duplicates
 //O(n)
 func (n *Node) DeleteDups() {
@@ -94,6 +97,9 @@ func (n *Node) DeleteDupsNoBuf() {
 	}
 }
 
+//2.2 Return Kth to Last:
+//Implement an algorithm to find the kth to last element of a singly linked list.
+
 func (n *Node) Last(k int) *Node {
 	runner := n
 	length := 0
@@ -113,6 +119,23 @@ func (n *Node) Last(k int) *Node {
 	return current
 }
 
+func (n *Node) lastRec(k int, i *int) *Node {
+	if n == nil {
+		return nil
+	}
+	nd := n.next.lastRec(k, i)
+	*i += 1
+	if *i == k {
+		return n
+	}
+	return nd
+}
+
+func (n *Node) LastRec(k int) *Node {
+	i := 0
+	return n.lastRec(k, &i)
+}
+
 func (n *Node) Slice() *[]int {
 	s := []int{}
 	currentNode := n
@@ -121,4 +144,22 @@ func (n *Node) Slice() *[]int {
 		currentNode = currentNode.next
 	}
 	return &s
+}
+
+//LastIter is the most optimal. O(n) time, O(1) space.
+//We don't need a length counter.
+func (n *Node) LastIter(k int) *Node {
+	runner := n
+	for i := 0; i < k; i++ {
+		if runner == nil {
+			return nil
+		}
+		runner = runner.next
+	}
+	current := n
+	for runner.next != nil {
+		current = current.next
+		runner = runner.next
+	}
+	return current
 }
