@@ -366,3 +366,51 @@ func TestNode_PartitionStable(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_Sum(t *testing.T) {
+	tests := []struct {
+		left   *Node
+		right  *Node
+		expect *Node
+	}{
+		{
+			left:   NewNodeFromSlice([]int{0}),
+			right:  NewNodeFromSlice([]int{0}),
+			expect: NewNodeFromSlice([]int{0}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{1}),
+			right:  NewNodeFromSlice([]int{}),
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{}),
+			right:  NewNodeFromSlice([]int{1, 2}),
+			expect: NewNodeFromSlice([]int{1, 2}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{3, 2, 1}),
+			right:  NewNodeFromSlice([]int{4, 5, 6}),
+			expect: NewNodeFromSlice([]int{7, 7, 7}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{9, 9, 9}),
+			right:  NewNodeFromSlice([]int{9, 9, 9}),
+			expect: NewNodeFromSlice([]int{8, 9, 9, 1}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
+			right:  NewNodeFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
+			expect: NewNodeFromSlice([]int{8, 0, 0, 3, 9, 3, 3, 9, 0, 3, 2, 2, 1, 1, 1}),
+		},
+	}
+	for _, tt := range tests {
+		n := tt.left.Sum(tt.right, 0)
+		if !cmp.Equal(n, tt.expect) {
+			t.Fatalf("got %+v. expected %+v.",
+				n.Slice(),
+				tt.expect.Slice(),
+			)
+		}
+	}
+}
