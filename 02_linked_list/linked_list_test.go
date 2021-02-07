@@ -121,6 +121,35 @@ func TestNode_Delete(t *testing.T) {
 	}
 }
 
+func TestNode_Length(t *testing.T) {
+	tests := []struct {
+		input *Node
+		want  int
+	}{
+		{
+			input: NewNodeFromSlice([]int{}),
+			want:  0,
+		},
+		{
+			input: NewNodeFromSlice([]int{1}),
+			want:  1,
+		},
+		{
+			input: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			want:  9,
+		},
+	}
+	for _, tt := range tests {
+		length := tt.input.Length()
+		if !cmp.Equal(length, tt.want) {
+			t.Fatalf("got %+v. expected %+v.",
+				length,
+				tt.want,
+			)
+		}
+	}
+}
+
 func TestNode_DeleteDups(t *testing.T) {
 	tests := []struct {
 		input  *Node
@@ -405,7 +434,55 @@ func TestNode_Sum(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		n := tt.left.Sum(tt.right, 0)
+		n := tt.left.Add(tt.right, 0)
+		if !cmp.Equal(n, tt.expect) {
+			t.Fatalf("got %+v. expected %+v.",
+				n.Slice(),
+				tt.expect.Slice(),
+			)
+		}
+	}
+}
+
+func TestNode_AddForward(t *testing.T) {
+	tests := []struct {
+		left   *Node
+		right  *Node
+		expect *Node
+	}{
+		{
+			left:   NewNodeFromSlice([]int{0}),
+			right:  NewNodeFromSlice([]int{0}),
+			expect: NewNodeFromSlice([]int{0}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{1}),
+			right:  NewNodeFromSlice([]int{}),
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{}),
+			right:  NewNodeFromSlice([]int{1, 2}),
+			expect: NewNodeFromSlice([]int{1, 2}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{3, 2, 1}),
+			right:  NewNodeFromSlice([]int{4, 5, 6}),
+			expect: NewNodeFromSlice([]int{7, 7, 7}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{9, 9, 9}),
+			right:  NewNodeFromSlice([]int{9, 9, 9}),
+			expect: NewNodeFromSlice([]int{1, 9, 9, 8}),
+		},
+		{
+			left:   NewNodeFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
+			right:  NewNodeFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
+			expect: NewNodeFromSlice([]int{3, 4, 5, 6, 7, 0, 3, 3, 5, 8, 4, 6, 6, 3, 0}),
+		},
+	}
+	for _, tt := range tests {
+		n := tt.left.AddForward(tt.right)
 		if !cmp.Equal(n, tt.expect) {
 			t.Fatalf("got %+v. expected %+v.",
 				n.Slice(),

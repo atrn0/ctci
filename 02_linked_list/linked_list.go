@@ -62,6 +62,13 @@ func (n *Node) Slice() *[]int {
 	return &s
 }
 
+func (n *Node) Length() int {
+	if n == nil {
+		return 0
+	}
+	return 1 + n.Next.Length()
+}
+
 //2.1 Remove Dups: Write code to remove duplicates from an unsorted linked list.
 //FOLLOW UP How would you solve this problem if a temporary buffer is not allowed?
 
@@ -248,7 +255,7 @@ func (n *Node) PartitionStable(x int) *Node {
 //Suppose the digits are stored in forward order. Repeat the above problem.
 //Input: (6 -> 1 -> 7) + (2 -> 9 -> 5). That is,617 + 295. Output:9 ->1 ->2. That is, 912.
 
-func (n *Node) Sum(right *Node, carry int) *Node {
+func (n *Node) Add(right *Node, carry int) *Node {
 	s := carry
 	if n != nil {
 		s += n.Data
@@ -264,13 +271,60 @@ func (n *Node) Sum(right *Node, carry int) *Node {
 		return sum
 	}
 	if n == nil {
-		sum.Next = right.Next.Sum(nil, s/10)
+		sum.Next = right.Next.Add(nil, s/10)
 		return sum
 	}
 	if right == nil {
-		sum.Next = n.Next.Sum(nil, s/10)
+		sum.Next = n.Next.Add(nil, s/10)
 		return sum
 	}
-	sum.Next = n.Next.Sum(right.Next, s/10)
+	sum.Next = n.Next.Add(right.Next, s/10)
 	return sum
+}
+
+func (n *Node) AddForward(right *Node) *Node {
+	left := n
+	leftLen := left.Length()
+	rightLen := right.Length()
+
+	//0 padding
+	current := NewNode(0)
+	head := current
+	if leftLen < rightLen {
+		for i := 1; i < rightLen-leftLen; i++ {
+			current.Next = NewNode(0)
+			current = current.Next
+		}
+		current.Next = left
+		left = head
+	} else if leftLen > rightLen {
+		for i := 1; i < leftLen-rightLen; i++ {
+			current.Next = NewNode(0)
+			current = current.Next
+		}
+		current.Next = right
+		right = head
+	}
+
+	sum, carry := addForwardSameLen(left, right)
+	if carry != 0 {
+		s := NewNode(carry)
+		s.Next = sum
+		return s
+	}
+	return sum
+}
+
+//addForwardSameLen
+func addForwardSameLen(left, right *Node) (currentSum *Node, carry int) {
+	if left == nil && right == nil {
+		return nil, 0
+	}
+
+	nextSum, carry := addForwardSameLen(left.Next, right.Next)
+	sum := left.Data + right.Data + carry
+	currentSum = NewNode(sum % 10)
+	currentSum.Next = nextSum
+	carry = sum / 10
+	return
 }
