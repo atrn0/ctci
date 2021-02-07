@@ -270,3 +270,99 @@ func TestNode_DeleteMiddle(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_Partition(t *testing.T) {
+	tests := []struct {
+		input  *Node
+		x      int
+		expect *Node
+	}{
+		{
+			input:  NewNodeFromSlice([]int{}),
+			x:      3,
+			expect: nil,
+		},
+		{
+			input:  NewNodeFromSlice([]int{1}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{2, 1}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{2, 1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{3, 2, 1}),
+			x:      2,
+			expect: NewNodeFromSlice([]int{1, 2, 3}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{1, 2, 1, 2, 9, 7, 3, 5, 3}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
+			x:      5,
+			expect: NewNodeFromSlice([]int{2, 3, 3, -1, 2, 7, 6, 5, 9, 9, 9, 10}),
+		},
+	}
+	for _, tt := range tests {
+		n, _ := tt.input.Partition(tt.x)
+		if !cmp.Equal(n, tt.expect) {
+			t.Fatalf("got %+v. expected %+v.",
+				n.Slice(),
+				tt.expect.Slice(),
+			)
+		}
+	}
+}
+
+func TestNode_PartitionStable(t *testing.T) {
+	tests := []struct {
+		input  *Node
+		x      int
+		expect *Node
+	}{
+		{
+			input:  NewNodeFromSlice([]int{}),
+			x:      3,
+			expect: nil,
+		},
+		{
+			input:  NewNodeFromSlice([]int{1}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{2, 1}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{2, 1}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{3, 2, 1}),
+			x:      2,
+			expect: NewNodeFromSlice([]int{1, 3, 2}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
+			x:      3,
+			expect: NewNodeFromSlice([]int{1, 2, 1, 2, 3, 5, 3, 7, 9}),
+		},
+		{
+			input:  NewNodeFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
+			x:      5,
+			expect: NewNodeFromSlice([]int{2, 3, 3, -1, 2, 10, 9, 9, 9, 5, 6, 7}),
+		},
+	}
+	for _, tt := range tests {
+		n := tt.input.PartitionStable(tt.x)
+		if !cmp.Equal(n, tt.expect) {
+			t.Fatalf("got %+v. expected %+v.",
+				n.Slice(),
+				tt.expect.Slice(),
+			)
+		}
+	}
+}

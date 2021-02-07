@@ -123,7 +123,7 @@ func (n *Node) Last(k int) *Node {
 	return current
 }
 
-//LastRec This approach uses O(n) times and O(n) spaces. Moreover, not readable :(
+//LastRec This approach uses O(n) time and O(n) space. Moreover, not readable :(
 func (n *Node) LastRec(k int) *Node {
 	i := 0
 	return n.lastRec(k, &i)
@@ -180,4 +180,61 @@ func (n *Node) DeleteMiddle() {
 	if current != nil && current.Next != nil {
 		current.Next = current.Next.Next
 	}
+}
+
+//2.4 Partition: Write code to partition a linked list around a value x,
+//such that all nodes less than x come before all nodes greater than or equal to x.
+//If x is contained within the list the values of x only need to be after
+//the elements less than x (see below).
+//The partition element x can appear anywhere in the "right partition";
+//it does not need to appear between the left and right partitions.
+//Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1 [partition=5] Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
+
+func (n *Node) Partition(x int) (*Node, *Node) {
+	if n == nil {
+		return nil, nil
+	}
+	if n.Next == nil {
+		return n, n
+	}
+	head, tail := n.Next.Partition(x)
+	if n.Data < x {
+		n.Next = head
+		return n, tail
+	}
+	tail.Next = NewNode(n.Data)
+	return head, tail.Next
+}
+
+func (n *Node) PartitionStable(x int) *Node {
+	if n == nil {
+		return nil
+	}
+	var beforeHead, beforeTail, afterHead, afterTail *Node
+	current := n
+	for current != nil {
+		next := current.Next
+		current.Next = nil
+		if current.Data < x {
+			if beforeHead == nil {
+				beforeHead = current
+				beforeTail = beforeHead
+			} else {
+				beforeTail.Next = current
+				beforeTail = current
+			}
+		} else {
+			if afterHead == nil {
+				afterHead = current
+				afterTail = afterHead
+			} else {
+				afterTail.Next = current
+				afterTail = current
+			}
+		}
+		current = next
+	}
+
+	beforeTail.Next = afterHead
+	return beforeHead
 }
