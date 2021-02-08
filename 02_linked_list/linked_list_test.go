@@ -44,7 +44,7 @@ func TestNewNodeFromSlice(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		n := NewNodeFromSlice(tt.input)
+		n := NewFromSlice(tt.input)
 		if !cmp.Equal(n, tt.expect) {
 			t.Fatalf("got %+v. expected %+v.",
 				n.Slice(),
@@ -61,19 +61,19 @@ func TestNode_AppendToTail(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			data:   1,
-			expect: NewNodeFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
 			data:   2,
-			expect: NewNodeFromSlice([]int{1, 2}),
+			expect: NewFromSlice([]int{1, 2}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
 			data:   5,
-			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9, 5}),
+			expect: NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9, 5}),
 		},
 	}
 	for _, tt := range tests {
@@ -94,19 +94,19 @@ func TestNode_Delete(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			data:   1,
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
 			data:   1,
-			expect: NewNodeFromSlice([]int{}),
+			expect: NewFromSlice([]int{}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
 			data:   5,
-			expect: NewNodeFromSlice([]int{1, 2, 3, 3, 3, 2, 7, 9}),
+			expect: NewFromSlice([]int{1, 2, 3, 3, 3, 2, 7, 9}),
 		},
 	}
 	for _, tt := range tests {
@@ -127,15 +127,15 @@ func TestNode_Length(t *testing.T) {
 		want  int
 	}{
 		{
-			input: NewNodeFromSlice([]int{}),
+			input: NewFromSlice([]int{}),
 			want:  0,
 		},
 		{
-			input: NewNodeFromSlice([]int{1}),
+			input: NewFromSlice([]int{1}),
 			want:  1,
 		},
 		{
-			input: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			input: NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
 			want:  9,
 		},
 	}
@@ -156,16 +156,16 @@ func TestNode_DeleteDups(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
-			expect: NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
-			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			expect: NewFromSlice([]int{1, 2, 3, 5, 7, 9}),
 		},
 	}
 	for _, tt := range tests {
@@ -185,16 +185,16 @@ func TestNode_DeleteDupsNoBuf(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
-			expect: NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
-			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			expect: NewFromSlice([]int{1, 2, 3, 5, 7, 9}),
 		},
 	}
 	for _, tt := range tests {
@@ -215,19 +215,19 @@ func TestNode_Last(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			k:      1,
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
 			k:      0,
-			expect: NewNodeFromSlice([]int{}),
+			expect: NewFromSlice([]int{}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7, 9}),
 			k:      3,
-			expect: NewNodeFromSlice([]int{2, 7, 9}),
+			expect: NewFromSlice([]int{2, 7, 9}),
 		},
 	}
 	for _, tt := range tests {
@@ -265,28 +265,28 @@ func TestNode_DeleteMiddle(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
-			expect: NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2}),
-			expect: NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1, 2}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3}),
-			expect: NewNodeFromSlice([]int{1, 3}),
+			input:  NewFromSlice([]int{1, 2, 3}),
+			expect: NewFromSlice([]int{1, 3}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
-			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 1, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
+			expect: NewFromSlice([]int{1, 2, 3, 5, 1, 2, 7, 9}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7}),
-			expect: NewNodeFromSlice([]int{1, 2, 3, 5, 3, 2, 7}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 3, 2, 7}),
+			expect: NewFromSlice([]int{1, 2, 3, 5, 3, 2, 7}),
 		},
 	}
 	for _, tt := range tests {
@@ -307,34 +307,34 @@ func TestNode_Partition(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			x:      3,
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{2, 1}),
+			input:  NewFromSlice([]int{2, 1}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{2, 1}),
+			expect: NewFromSlice([]int{2, 1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{3, 2, 1}),
+			input:  NewFromSlice([]int{3, 2, 1}),
 			x:      2,
-			expect: NewNodeFromSlice([]int{1, 2, 3}),
+			expect: NewFromSlice([]int{1, 2, 3}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{1, 2, 1, 2, 9, 7, 3, 5, 3}),
+			expect: NewFromSlice([]int{1, 2, 1, 2, 9, 7, 3, 5, 3}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
+			input:  NewFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
 			x:      5,
-			expect: NewNodeFromSlice([]int{2, 3, 3, -1, 2, 7, 6, 5, 9, 9, 9, 10}),
+			expect: NewFromSlice([]int{2, 3, 3, -1, 2, 7, 6, 5, 9, 9, 9, 10}),
 		},
 	}
 	for _, tt := range tests {
@@ -355,34 +355,34 @@ func TestNode_PartitionStable(t *testing.T) {
 		expect *Node
 	}{
 		{
-			input:  NewNodeFromSlice([]int{}),
+			input:  NewFromSlice([]int{}),
 			x:      3,
 			expect: nil,
 		},
 		{
-			input:  NewNodeFromSlice([]int{1}),
+			input:  NewFromSlice([]int{1}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{1}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{2, 1}),
+			input:  NewFromSlice([]int{2, 1}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{2, 1}),
+			expect: NewFromSlice([]int{2, 1}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{3, 2, 1}),
+			input:  NewFromSlice([]int{3, 2, 1}),
 			x:      2,
-			expect: NewNodeFromSlice([]int{1, 3, 2}),
+			expect: NewFromSlice([]int{1, 3, 2}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
+			input:  NewFromSlice([]int{1, 2, 3, 5, 3, 1, 2, 7, 9}),
 			x:      3,
-			expect: NewNodeFromSlice([]int{1, 2, 1, 2, 3, 5, 3, 7, 9}),
+			expect: NewFromSlice([]int{1, 2, 1, 2, 3, 5, 3, 7, 9}),
 		},
 		{
-			input:  NewNodeFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
+			input:  NewFromSlice([]int{10, 2, 9, 9, 9, 5, 3, 3, -1, 6, 2, 7}),
 			x:      5,
-			expect: NewNodeFromSlice([]int{2, 3, 3, -1, 2, 10, 9, 9, 9, 5, 6, 7}),
+			expect: NewFromSlice([]int{2, 3, 3, -1, 2, 10, 9, 9, 9, 5, 6, 7}),
 		},
 	}
 	for _, tt := range tests {
@@ -403,34 +403,34 @@ func TestNode_Sum(t *testing.T) {
 		expect *Node
 	}{
 		{
-			left:   NewNodeFromSlice([]int{0}),
-			right:  NewNodeFromSlice([]int{0}),
-			expect: NewNodeFromSlice([]int{0}),
+			left:   NewFromSlice([]int{0}),
+			right:  NewFromSlice([]int{0}),
+			expect: NewFromSlice([]int{0}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{1}),
-			right:  NewNodeFromSlice([]int{}),
-			expect: NewNodeFromSlice([]int{1}),
+			left:   NewFromSlice([]int{1}),
+			right:  NewFromSlice([]int{}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{}),
-			right:  NewNodeFromSlice([]int{1, 2}),
-			expect: NewNodeFromSlice([]int{1, 2}),
+			left:   NewFromSlice([]int{}),
+			right:  NewFromSlice([]int{1, 2}),
+			expect: NewFromSlice([]int{1, 2}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{3, 2, 1}),
-			right:  NewNodeFromSlice([]int{4, 5, 6}),
-			expect: NewNodeFromSlice([]int{7, 7, 7}),
+			left:   NewFromSlice([]int{3, 2, 1}),
+			right:  NewFromSlice([]int{4, 5, 6}),
+			expect: NewFromSlice([]int{7, 7, 7}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{9, 9, 9}),
-			right:  NewNodeFromSlice([]int{9, 9, 9}),
-			expect: NewNodeFromSlice([]int{8, 9, 9, 1}),
+			left:   NewFromSlice([]int{9, 9, 9}),
+			right:  NewFromSlice([]int{9, 9, 9}),
+			expect: NewFromSlice([]int{8, 9, 9, 1}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
-			right:  NewNodeFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
-			expect: NewNodeFromSlice([]int{8, 0, 0, 3, 9, 3, 3, 9, 0, 3, 2, 2, 1, 1, 1}),
+			left:   NewFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
+			right:  NewFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
+			expect: NewFromSlice([]int{8, 0, 0, 3, 9, 3, 3, 9, 0, 3, 2, 2, 1, 1, 1}),
 		},
 	}
 	for _, tt := range tests {
@@ -451,34 +451,34 @@ func TestNode_AddForward(t *testing.T) {
 		expect *Node
 	}{
 		{
-			left:   NewNodeFromSlice([]int{0}),
-			right:  NewNodeFromSlice([]int{0}),
-			expect: NewNodeFromSlice([]int{0}),
+			left:   NewFromSlice([]int{0}),
+			right:  NewFromSlice([]int{0}),
+			expect: NewFromSlice([]int{0}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{1}),
-			right:  NewNodeFromSlice([]int{}),
-			expect: NewNodeFromSlice([]int{1}),
+			left:   NewFromSlice([]int{1}),
+			right:  NewFromSlice([]int{}),
+			expect: NewFromSlice([]int{1}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{}),
-			right:  NewNodeFromSlice([]int{1, 2}),
-			expect: NewNodeFromSlice([]int{1, 2}),
+			left:   NewFromSlice([]int{}),
+			right:  NewFromSlice([]int{1, 2}),
+			expect: NewFromSlice([]int{1, 2}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{3, 2, 1}),
-			right:  NewNodeFromSlice([]int{4, 5, 6}),
-			expect: NewNodeFromSlice([]int{7, 7, 7}),
+			left:   NewFromSlice([]int{3, 2, 1}),
+			right:  NewFromSlice([]int{4, 5, 6}),
+			expect: NewFromSlice([]int{7, 7, 7}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{9, 9, 9}),
-			right:  NewNodeFromSlice([]int{9, 9, 9}),
-			expect: NewNodeFromSlice([]int{1, 9, 9, 8}),
+			left:   NewFromSlice([]int{9, 9, 9}),
+			right:  NewFromSlice([]int{9, 9, 9}),
+			expect: NewFromSlice([]int{1, 9, 9, 8}),
 		},
 		{
-			left:   NewNodeFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
-			right:  NewNodeFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
-			expect: NewNodeFromSlice([]int{3, 4, 5, 6, 7, 0, 3, 3, 5, 8, 4, 6, 6, 3, 0}),
+			left:   NewFromSlice([]int{5, 6, 4, 6, 2, 4, 5, 1, 9}),
+			right:  NewFromSlice([]int{3, 4, 5, 6, 6, 9, 7, 7, 1, 2, 2, 2, 1, 1, 1}),
+			expect: NewFromSlice([]int{3, 4, 5, 6, 7, 0, 3, 3, 5, 8, 4, 6, 6, 3, 0}),
 		},
 	}
 	for _, tt := range tests {

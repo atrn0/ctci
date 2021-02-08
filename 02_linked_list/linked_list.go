@@ -5,18 +5,18 @@ type Node struct {
 	Data int
 }
 
-func NewNode(data int) *Node {
+func New(data int) *Node {
 	return &Node{Data: data}
 }
 
-func NewNodeFromSlice(s []int) *Node {
+func NewFromSlice(s []int) *Node {
 	if len(s) == 0 {
 		return nil
 	}
-	n := NewNode(s[0])
+	n := New(s[0])
 	current := n
 	for _, d := range s[1:] {
-		current.Next = NewNode(d)
+		current.Next = New(d)
 		current = current.Next
 	}
 	return n
@@ -24,13 +24,13 @@ func NewNodeFromSlice(s []int) *Node {
 
 func (n *Node) AppendToTail(data int) *Node {
 	if n == nil {
-		return NewNode(data)
+		return New(data)
 	}
 	currentNode := n
 	for currentNode.Next != nil {
 		currentNode = currentNode.Next
 	}
-	currentNode.Next = NewNode(data)
+	currentNode.Next = New(data)
 	return n
 }
 
@@ -209,7 +209,7 @@ func (n *Node) Partition(x int) (*Node, *Node) {
 		n.Next = head
 		return n, tail
 	}
-	tail.Next = NewNode(n.Data)
+	tail.Next = New(n.Data)
 	return head, tail.Next
 }
 
@@ -263,7 +263,7 @@ func (n *Node) Add(right *Node, carry int) *Node {
 	if right != nil {
 		s += right.Data
 	}
-	sum := NewNode(s % 10)
+	sum := New(s % 10)
 	if n == nil && right == nil {
 		if carry == 0 {
 			return nil
@@ -288,18 +288,18 @@ func (n *Node) AddForward(right *Node) *Node {
 	rightLen := right.Length()
 
 	//0 padding
-	current := NewNode(0)
+	current := New(0)
 	head := current
 	if leftLen < rightLen {
 		for i := 1; i < rightLen-leftLen; i++ {
-			current.Next = NewNode(0)
+			current.Next = New(0)
 			current = current.Next
 		}
 		current.Next = left
 		left = head
 	} else if leftLen > rightLen {
 		for i := 1; i < leftLen-rightLen; i++ {
-			current.Next = NewNode(0)
+			current.Next = New(0)
 			current = current.Next
 		}
 		current.Next = right
@@ -308,7 +308,7 @@ func (n *Node) AddForward(right *Node) *Node {
 
 	sum, carry := addForwardSameLen(left, right)
 	if carry != 0 {
-		s := NewNode(carry)
+		s := New(carry)
 		s.Next = sum
 		return s
 	}
@@ -323,7 +323,7 @@ func addForwardSameLen(left, right *Node) (currentSum *Node, carry int) {
 
 	nextSum, carry := addForwardSameLen(left.Next, right.Next)
 	sum := left.Data + right.Data + carry
-	currentSum = NewNode(sum % 10)
+	currentSum = New(sum % 10)
 	currentSum.Next = nextSum
 	carry = sum / 10
 	return
