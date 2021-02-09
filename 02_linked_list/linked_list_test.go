@@ -553,3 +553,55 @@ func TestNode_IsPalindrome(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_Intersection(t *testing.T) {
+	intersection := NewFromSlice([]int{1, 2, 3})
+	tests := []struct {
+		input1 *Node
+		input2 *Node
+		want   *Node
+	}{
+		{
+			input1: nil,
+			input2: nil,
+			want:   nil,
+		},
+		{
+			input1: New(1),
+			input2: New(1),
+			want:   nil,
+		},
+		{
+			input1: &Node{
+				Next: intersection,
+				Data: 9,
+			},
+			input2: &Node{
+				Next: &Node{
+					Next: intersection,
+					Data: 3,
+				},
+				Data: 5,
+			},
+			want: intersection,
+		},
+	}
+	for _, tt := range tests {
+		i := tt.input1.Intersection(tt.input2)
+		if !cmp.Equal(tt.want, i) {
+			t.Fatalf("got %+v. want %+v.",
+				i,
+				tt.want,
+			)
+		}
+	}
+	for _, tt := range tests {
+		i := tt.input1.IntersectionNoBuf(tt.input2)
+		if !cmp.Equal(tt.want, i) {
+			t.Fatalf("got %+v. want %+v.",
+				i,
+				tt.want,
+			)
+		}
+	}
+}

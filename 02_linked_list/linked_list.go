@@ -390,7 +390,78 @@ func (n *Node) Unshift(data int) *Node {
 	}
 }
 
-//1 -> 2 -> 3
-// revLeft = 2 -> 1
-// right   = 2 -> 3
-//1 -> 1
+// 2.6 can be implemented using recursion
+
+//2.7 Intersection:
+//Given two (singly) linked lists, determine if the two lists intersect.
+//Return the intersecting node.
+//Note that the intersection is defined based on reference, not value.
+//That is, if the kth node of the first linked list is the exact same node
+//(by reference) as the jth node of the second linked list, then they are intersecting.
+
+func (n *Node) Intersection(n2 *Node) *Node {
+	seen := make(map[*Node]bool, n.Length())
+	n1Current := n
+	for n1Current != nil {
+		seen[n1Current] = true
+		n1Current = n1Current.Next
+	}
+
+	n2Current := n2
+	for n2Current != nil {
+		if seen[n2Current] {
+			return n2Current
+		}
+		n2Current = n2Current.Next
+	}
+	return nil
+}
+
+func (n *Node) IntersectionNoBuf(n2 *Node) *Node {
+	n1Last, n1Len := n.lastAndLen()
+	n2Last, n2Len := n2.lastAndLen()
+	if n1Last != n2Last {
+		return nil
+	}
+
+	n1Current := n
+	n2Current := n2
+	if n1Len > n2Len {
+		n1Current = n1Current.advance(n1Len - n2Len)
+	} else {
+		n2Current = n2Current.advance(n2Len - n1Len)
+	}
+
+	for n1Current != nil {
+		if n1Current == n2Current {
+			return n1Current
+		}
+		n1Current = n1Current.Next
+		n2Current = n2Current.Next
+	}
+	return nil
+}
+
+func (n *Node) lastAndLen() (*Node, int) {
+	if n == nil {
+		return n, 0
+	}
+	c := n
+	ln := 1
+	for c.Next != nil {
+		ln += 1
+		c = c.Next
+	}
+	return c, ln
+}
+
+func (n *Node) advance(i int) *Node {
+	if n == nil {
+		return nil
+	}
+	c := n
+	for j := 0; j < i; j++ {
+		c = c.Next
+	}
+	return c
+}
