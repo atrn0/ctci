@@ -605,3 +605,66 @@ func TestNode_Intersection(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_DetectLoop(t *testing.T) {
+	loop := New(1)
+	loop.Next = &Node{
+		Next: &Node{
+			Next: loop,
+			Data: 3,
+		},
+		Data: 2,
+	}
+
+	tests := []struct {
+		input *Node
+		want  *Node
+	}{
+		{
+			input: nil,
+			want:  nil,
+		},
+		{
+			input: &Node{
+				Next: &Node{
+					Next: nil,
+					Data: 2,
+				},
+				Data: 1,
+			},
+			want: nil,
+		},
+		{
+			input: loop,
+			want:  loop,
+		},
+		{
+			input: &Node{
+				Next: &Node{
+					Next: loop,
+					Data: 4,
+				},
+				Data: 5,
+			},
+			want: loop,
+		},
+	}
+	for _, tt := range tests {
+		l := tt.input.DetectLoop()
+		if tt.want != l {
+			t.Fatalf("got %+v. want %+v.",
+				l,
+				tt.want,
+			)
+		}
+	}
+	for _, tt := range tests {
+		l := tt.input.DetectLoopRunner()
+		if tt.want != l {
+			t.Fatalf("got %+v. want %+v.",
+				l,
+				tt.want,
+			)
+		}
+	}
+}

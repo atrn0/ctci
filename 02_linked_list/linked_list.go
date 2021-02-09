@@ -465,3 +465,44 @@ func (n *Node) advance(i int) *Node {
 	}
 	return c
 }
+
+//2.8 Loop Detection: Given a circular linked list,
+//implement an algorithm that returns the node at the beginning of the loop.
+//DEFINITION
+//	Circular linked list: A (corrupt) linked list in which a node's next pointer points to
+//	an earlier node, so as to make a loop in the linked list.
+
+func (n *Node) DetectLoop() *Node {
+	seen := map[*Node]bool{}
+	c := n
+	for c != nil {
+		if seen[c] {
+			return c
+		}
+
+		seen[c] = true
+		c = c.Next
+	}
+	return nil
+}
+
+func (n *Node) DetectLoopRunner() *Node {
+	slow, fast := n, n
+	for fast != nil && fast.Next != nil {
+		slow, fast = slow.Next, fast.Next.Next
+		if slow == fast { //collide
+			break
+		}
+	}
+
+	if fast == nil || fast.Next == nil { //no loop
+		return nil
+	}
+
+	//detect where the loop start
+	slow = n
+	for slow != fast {
+		slow, fast = slow.Next, fast.Next
+	}
+	return slow
+}
