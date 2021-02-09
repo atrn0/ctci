@@ -328,3 +328,69 @@ func addForwardSameLen(left, right *Node) (currentSum *Node, carry int) {
 	carry = sum / 10
 	return
 }
+
+//2.6 Palindrome: Implement a function to check if a linked list is a palindrome.
+
+func (n *Node) IsPalindrome() bool {
+	if n == nil {
+		return true
+	}
+
+	c := &Node{Next: n}
+	r := n
+	//  -> 1 -> 2 -> 3
+	//c
+	//     r
+	var left *Node
+	for {
+		if r.Next == nil {
+			//length is odd
+			break
+		}
+		if r.Next.Next == nil {
+			//length is even
+			left = left.Unshift(c.Next.Data)
+			break
+		}
+
+		c = c.Next
+		left = left.Unshift(c.Data)
+		r = r.Next.Next
+	}
+	right := c.Next.Next
+
+	//if length is odd
+	//  -> 1 -> 2 -> 3 -> 4 -> 5
+	//          c
+	//                         r
+	// left  = 2 -> 1
+	// right = 4 -> 5
+	//
+	//if length is even
+	//  -> 1 -> 2 -> 3 -> 4
+	//     c
+	//               r
+	// left  = 2 -> 1
+	// right = 3 -> 4
+	for left != nil && right != nil {
+		if left.Data != right.Data {
+			return false
+		}
+		left = left.Next
+		right = right.Next
+	}
+
+	return true
+}
+
+func (n *Node) Unshift(data int) *Node {
+	return &Node{
+		Next: n,
+		Data: data,
+	}
+}
+
+//1 -> 2 -> 3
+// revLeft = 2 -> 1
+// right   = 2 -> 3
+//1 -> 1

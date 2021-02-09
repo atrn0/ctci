@@ -491,3 +491,65 @@ func TestNode_AddForward(t *testing.T) {
 		}
 	}
 }
+
+func TestNode_IsPalindrome(t *testing.T) {
+	tests := []struct {
+		input *Node
+		want  bool
+	}{
+		{
+			input: NewFromSlice([]int{}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{1}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{1, 2}),
+			want:  false,
+		},
+		{
+			input: NewFromSlice([]int{2, 2}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{1, 2, 1}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{2, 6, 3, 2}),
+			want:  false,
+		},
+		{
+			input: NewFromSlice([]int{1, 2, 3}),
+			want:  false,
+		},
+		{
+			input: NewFromSlice([]int{2, 2, 4, 4}),
+			want:  false,
+		},
+		{
+			input: NewFromSlice([]int{2, 3, 3, 2}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{2, 3, 1, 3, 2}),
+			want:  true,
+		},
+		{
+			input: NewFromSlice([]int{5, 4, 4, 3, 4, 3, 4, 4, 5}),
+			want:  true,
+		},
+	}
+	for _, tt := range tests {
+		b := tt.input.IsPalindrome()
+		if b != tt.want {
+			t.Fatalf("got %+v for %+v. expected %+v.",
+				b,
+				tt.input.Slice(),
+				tt.want,
+			)
+		}
+	}
+}
