@@ -1,5 +1,5 @@
-from typing import Optional, Union, Any, List
 from collections import deque
+from typing import Any, List, Optional, Union
 
 
 class MyStack:
@@ -14,12 +14,12 @@ class MyStack:
 
     def peek(self) -> int:
         if len(self._body) == 0:
-            raise IndexError
+            raise IndexError("peek from empty stack")
         return self._body[-1]
 
     def pop(self) -> int:
         if len(self._body) == 0:
-            raise IndexError
+            raise IndexError("pop from empty stack")
         return self._body.pop()
 
 
@@ -35,12 +35,12 @@ class MyQueue:
 
     def remove(self) -> Any:
         if len(self._body) == 0:
-            raise IndexError
+            raise IndexError("remove from empty stack")
         return self._body.popleft()
 
     def peek(self) -> Any:
         if len(self._body) == 0:
-            raise IndexError
+            raise IndexError("peek from empty stack")
         return self._body[0]
 
 
@@ -68,7 +68,7 @@ class LinkedListStack:
 
     def pop(self) -> int:
         if self._top.is_end:
-            raise IndexError
+            raise IndexError("pop from empty stack")
         else:
             ret = self._top.data
             self._top = self._top.next_node
@@ -77,7 +77,7 @@ class LinkedListStack:
 
     def peek(self) -> int:
         if self._top.is_end:
-            raise IndexError
+            raise IndexError("peek from empty stack")
         else:
             return self._top.data
 
@@ -179,7 +179,7 @@ class SetOfStacks:
 
     def pop(self) -> int:
         if len(self._stacks) == 0:
-            raise IndexError
+            raise IndexError("pop from empty stack")
         try:
             return self._stacks[-1].pop()
         except PopFromEmptyStack:
