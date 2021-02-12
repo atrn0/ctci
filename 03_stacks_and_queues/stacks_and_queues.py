@@ -1,5 +1,5 @@
 from collections import deque
-from typing import Any, List, Optional, Union
+from typing import Any, List, Union
 
 
 class MyStack:
@@ -44,7 +44,7 @@ class MyQueue:
         return self._body[0]
 
 
-## Stack via linked list
+# Stack via linked list
 class Node:
     def __init__(self, data: int, is_end=False) -> None:
         self.data = data
@@ -85,7 +85,7 @@ class LinkedListStack:
 """
 3.1 Three in One:
 
-Describe how you could use a single array to implement three stacks. 
+Describe how you could use a single array to implement three stacks.
 """
 
 
@@ -97,7 +97,7 @@ class FixedMultiStack:
 3.2 Stack Min:
 
 How would you design a stack which, in addition to push and pop, has a function min
-which returns the minimum element? Push, pop and min should all operate in 0(1) time. 
+which returns the minimum element? Push, pop and min should all operate in 0(1) time.
 """
 
 
@@ -151,7 +151,7 @@ class LimitedStack(MyStack):
 
     def push(self, item: int) -> None:
         if len(self) >= self.max_size:
-            raise StackOverFlow
+            raise StackOverFlow()
         else:
             super().push(item)
 
@@ -190,7 +190,7 @@ class SetOfStacks:
         return self._stacks[index].pop()
 
 
-""" 
+"""
 Queue via Stacks: Implement a MyQueue class which implements a queue using two stacks.
 
 """
@@ -229,12 +229,12 @@ class QueueViaStack:
             return self.backward.peek()
 
 
-""" 
+"""
 3.5 Sort Stack:
 
 Write a program to sort a stack such that the smallest items are on the top. You can use
 an additional temporary stack, but you may not copy the elements into any other data structure
-(such as an array). The stack supports the following operations: push, pop, peek, and is Empty. 
+(such as an array). The stack supports the following operations: push, pop, peek, and is Empty.
 """
 
 
@@ -268,7 +268,7 @@ class SortStack:
         return self.body.peek()
 
 
-""" 
+"""
 3.6 Animal Shelter:
 
 An animal shelter, which holds only dogs and cats, operates on a strictly"first in, first
@@ -276,7 +276,7 @@ out" basis. People must adopt either the "oldest" (based on arrival time) of all
 or they can select whether they would prefer a dog or a cat (and will receive the oldest animal of
 that type). They cannot select which specific animal they would like. Create the data structures to
 maintain this system and implement operations such as enqueue, dequeueAny, dequeueDog,
-and dequeueCat. You may use the built in Linkedlist data structure. 
+and dequeueCat. You may use the built in Linkedlist data structure.
 """
 
 
