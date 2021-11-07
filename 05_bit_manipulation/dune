@@ -1,2 +1,4 @@
 (executable
- (name bit_manipuration))
+ (name bit_manipulation)
+ (libraries stdint)
+ )
