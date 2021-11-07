@@ -1,5 +1,3 @@
-open Stdint.Int32
-
 (* 
 bit manipulation
 
@@ -30,13 +28,13 @@ examples
 10001001100
  *)
 let insertion n m i j =
-  let lmask = shift_left (-1l) (Int.add j 1) in (* 11110000000 *)
-  let rmask = shift_left 1l i - 1l in (* 00000000011 *)
-  let mask = logor lmask rmask in (* 11110000011 *)
-  let masked_n = logand n mask in
-  let shifted_m = shift_left m i in
-  logor masked_n shifted_m
+  let open Int in
+  let ( << ) = shift_left in
+  let ( #| ) = logor in
+  let ( & ) = logand in
+  let mask = (-1 << (j + 1)) #| ((1 << i) - 1) in (* 11110000011 *)
+  (n & mask) #| (m << i)
 
 let () =
-  assert (Int32.equal (insertion 0b10000000000l 0b10011l 2 6) 0b10001001100l);
-  assert (Int32.equal (insertion 0b11111111111l 0b00110l 3 7) 0b11100110111l);
+  assert ((insertion 0b10000000000 0b10011 2 6) = 0b10001001100);
+  assert ((insertion 0b11111111111 0b00110 3 7) = 0b11100110111);
