@@ -52,9 +52,9 @@ let to_string_bin d =
 let () =
   let test d =
     let got = to_string_bin d in
-    print_endline got;
     let gotf = Int32.(to_float (of_string ("0b" ^ got))) in
     let wantf = d *. Float.pow 2. 31. in
+    if Float.(to_int gotf != to_int wantf) then
     Printf.printf "got: %f, want: %f\n" gotf wantf;
     assert(gotf = wantf)
   in
@@ -63,4 +63,29 @@ let () =
 ;;
 
 
+let max a b = if a < b then b else a
 
+(* 
+Flip Bit to Win
+ *)
+let flip_bit_to_win n =
+  let rec find a previousl currentl maxl =
+    if a = 0 then (* viewed all bits *)
+      maxl else
+    if a land 1 = 1 then (* e.g. a = 11111111 *)
+      find (a lsr 1) previousl (currentl + 1) (max maxl (previousl + currentl + 2)) else
+    if a land 2 = 0 then (* e.g. a = 11111100 *)
+      find (a lsr 1) 0 0 maxl else
+                         (* e.g. a = 11111110 *)
+      find (a lsr 1) currentl 0 maxl
+  in
+  find n 0 0 1
+
+let () =
+  assert((flip_bit_to_win 0b1111011) = 7);
+  assert((flip_bit_to_win 0b0110011) = 3);
+  assert((flip_bit_to_win 0b0111111) = 7);
+  assert((flip_bit_to_win 0b1111110) = 7);
+  assert((flip_bit_to_win 0b1111111) = 8);
+  assert((flip_bit_to_win 0b11011101111) = 8);
+;;
