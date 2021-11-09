@@ -16,6 +16,7 @@ examples
 - 1011 & (~0 << 2) = 1000
  *)
 
+exception Unreachable
 
 (* 
 5.2 Insertion
@@ -70,14 +71,12 @@ Flip Bit to Win
  *)
 let flip_bit_to_win n =
   let rec find a previousl currentl maxl =
-    if a = 0 then (* viewed all bits *)
-      maxl else
-    if a land 1 = 1 then (* e.g. a = 11111111 *)
-      find (a lsr 1) previousl (currentl + 1) (max maxl (previousl + currentl + 2)) else
-    if a land 2 = 0 then (* e.g. a = 11111100 *)
-      find (a lsr 1) 0 0 maxl else
-                         (* e.g. a = 11111110 *)
-      find (a lsr 1) currentl 0 maxl
+    if a = 0 then (* viewed all bits *) maxl else
+    match (a land 2) lsr 1, a land 1 with
+      _, 1 -> (* e.g. a = 11111111 *) find (a lsr 1) previousl (currentl + 1) (max maxl (previousl + currentl + 2))
+    | 0, 0 -> (* e.g. a = 11111100 *) find (a lsr 1) 0 0 maxl
+    | 1, 0 -> (* e.g. a = 11111110 *) find (a lsr 1) currentl 0 maxl
+    | _ -> raise Unreachable
   in
   find n 0 0 1
 
