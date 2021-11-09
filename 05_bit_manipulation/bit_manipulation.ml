@@ -18,6 +18,7 @@ examples
 
 
 (* 
+5.2 Insertion
 10000000000 10011
 
 11110000000 = -1 << (6 + 1)
@@ -28,13 +29,38 @@ examples
 10001001100
  *)
 let insertion n m i j =
-  let open Int in
-  let ( << ) = shift_left in
-  let ( #| ) = logor in
-  let ( & ) = logand in
-  let mask = (-1 << (j + 1)) #| ((1 << i) - 1) in (* 11110000011 *)
-  (n & mask) #| (m << i)
+  let mask = (-1 lsl (j + 1)) lor ((1 lsl i) - 1) in (* 11110000011 *)
+  (n land mask) lor (m lsl i)
 
 let () =
   assert ((insertion 0b10000000000 0b10011 2 6) = 0b10001001100);
   assert ((insertion 0b11111111111 0b00110 3 7) = 0b11100110111);
+;;
+
+(* 
+5.3 Binary to String
+ *)  
+let to_string_bin d = 
+  if d > 1. || d < 0. then "ERROR" else
+  let rec f b i d = 
+    if i = 32 then if d = 0. then b else "ERROR" else
+    let threshold = Float.(pow 2. (of_int (-i))) in
+    if d >= threshold then f (b ^ "1") (i + 1) (d -. threshold) else f (b ^ "0") (i + 1) d
+  in
+  f "" 1 d
+
+let () =
+  let test d =
+    let got = to_string_bin d in
+    print_endline got;
+    let gotf = Int32.(to_float (of_string ("0b" ^ got))) in
+    let wantf = d *. Float.pow 2. 31. in
+    Printf.printf "got: %f, want: %f\n" gotf wantf;
+    assert(gotf = wantf)
+  in
+  test 0.5;
+  test 0.25;
+;;
+
+
+
